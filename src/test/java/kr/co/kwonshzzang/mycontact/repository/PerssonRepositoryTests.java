@@ -19,13 +19,15 @@ class PerssonRepositoryTests {
         Person person = new Person();
         person.setName("martin");
         person.setAge(10);
+        person.setBloodType("A");
         personRepository.save(person);
 
-//        System.out.println(personRepository.findAll());
+        System.out.println(personRepository.findAll());
         List<Person> people = personRepository.findAll();
         assertEquals(people.size(), 1);
         assertEquals(people.get(0).getName(), "martin");
         assertEquals(people.get(0).getAge(), 10);
+        assertEquals(people.get(0).getBloodType(), "A");
     }
 
 }
