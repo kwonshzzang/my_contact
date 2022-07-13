@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,9 +27,7 @@ class BlockRepositoryTests {
         blockRepository.save(block);
 
         List<Block> blocks = blockRepository.findAll();
-        assertEquals(blocks.size(), 1);
+        assertEquals(blocks.size(), 3);
         assertEquals(blocks.get(0).getName(), "martin");
-
     }
-
 }

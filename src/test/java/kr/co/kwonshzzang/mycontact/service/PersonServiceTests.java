@@ -1,6 +1,5 @@
 package kr.co.kwonshzzang.mycontact.service;
 
-import kr.co.kwonshzzang.mycontact.domain.Block;
 import kr.co.kwonshzzang.mycontact.domain.Person;
 import kr.co.kwonshzzang.mycontact.repository.BlockRepository;
 import kr.co.kwonshzzang.mycontact.repository.PersonRepository;
@@ -24,66 +23,49 @@ class PersonServiceTests {
 
     @Test
     void getPeopleExcludedBlocks() {
-        givenPeople();
-
         List<Person> result = personService.getPeopleExcludeBlocks();
-//        System.out.println(result);
-        result.stream().forEach(System.out::println);
+
+        assertEquals(result.size(), 3);
+        assertEquals(result.get(0).getName(), "david");
+        assertEquals(result.get(1).getName(), "dennis");
+        assertEquals(result.get(2).getName(), "benn");
+//
     }
 
     @Test
     void getPeopleByName() {
-        givenPeople();
         List<Person> result = personService.getPeopleByName("martin");
-        result.forEach(System.out::println);
+
+        assertEquals(result.size(), 1);
+        assertEquals(result.get(0).getName(), "martin");
     }
 
     @Test
-    void cascadeTest() {
-        givenPeople();
+    void findByBloodType() {
+        List<Person> result = personService.getPeopleByBloodType("A");
 
-        List<Person> result = personRepository.findAll();
-        result.forEach(System.out::println);
-
-        Person person = result.get(3);
-        person.getBlock().setStartDate(LocalDate.now());
-        person.getBlock().setEndDate(LocalDate.now());
-        personRepository.save(person);
-
-        personRepository.findAll().forEach(System.out::println);
-
-//        personRepository.delete(person);
-//        personRepository.findAll().forEach(System.out::println);
-//        blockRepository.findAll().forEach(System.out::println);
-        person.setBlock(null);
-        personRepository.save(person);
-        personRepository.findAll().forEach(System.out::println);
-        blockRepository.findAll().forEach(System.out::println);
+        assertEquals(result.size(), 2);
+        assertEquals(result.get(0).getName(), "martin");
+        assertEquals(result.get(1).getName(), "benn");
     }
+
+    @Test
+    void findByBirthdayBetween() {
+        List<Person> result = personService.getPeopleByBirthday(8);
+
+        assertEquals(result.size(), 2);
+        assertEquals(result.get(0).getName(), "martin");
+        assertEquals(result.get(1).getName(), "sophia");
+    }
+
+
 
     @Test
     void getPerson() {
-        givenPeople();
-
         Person person = personService.getPerson(3L);
-        System.out.println(person);
-    }
 
-    private void givenPeople() {
-        givenPerson("martin", 10, "A");
-        givenPerson("david", 9, "B");
-        givenBlockPerson("dennis", 7, "O");
-        givenBlockPerson("martin", 11, "AB");
-    }
+        assertEquals(person.getName(), "dennis");
 
-    private void givenPerson(String name, int age, String bloodType) {
-        personRepository.save(new Person(name, age, bloodType));
-    }
-
-    private void givenBlockPerson(String name, int age, String bloodType) {
-        Person blockPerson = new Person(name, age, bloodType);
-        blockPerson.setBlock(new Block("martin"));
-        personRepository.save(blockPerson);
     }
 
 }

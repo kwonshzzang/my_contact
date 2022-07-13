@@ -4,6 +4,8 @@ import kr.co.kwonshzzang.mycontact.domain.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -20,33 +22,35 @@ class PerssonRepositoryTests {
     @Test
     void crud() {
         Person person = new Person();
-        person.setName("martin");
+        person.setName("john");
         person.setAge(10);
         person.setBloodType("A");
         personRepository.save(person);
 
-        System.out.println(personRepository.findAll());
-        List<Person> people = personRepository.findAll();
+        List<Person> people = personRepository.findByName("john");
         assertEquals(people.size(), 1);
-        assertEquals(people.get(0).getName(), "martin");
+        assertEquals(people.get(0).getName(), "john");
         assertEquals(people.get(0).getAge(), 10);
         assertEquals(people.get(0).getBloodType(), "A");
     }
 
     @Test
-    void hashCodeAndEquals() {
-        Person person1 = new Person("martin", 10, "A");
-        Person person2 = new Person("martin", 10, "A");
+    void findByBloodType() {
+        List<Person> reslult = personRepository.findByBloodType("A");
 
-        System.out.println(person1.equals(person2));
-        System.out.println(person1.hashCode());
-        System.out.println(person2.hashCode());
-
-        Map<Person, Integer> map = new HashMap<>();
-        map.put(person1, person1.getAge());
-
-        System.out.println(map);
-        System.out.println(map.get(person2));
+        assertEquals(reslult.size(), 2);
+        assertEquals(reslult.get(0).getName(), "martin");
+        assertEquals(reslult.get(1).getName(), "benn");
     }
+
+    @Test
+    void findByBirthdayBetween() {
+        List<Person> result = personRepository.findByMonthOfBirthday(8);
+
+        assertEquals(result.size(), 2);
+        assertEquals(result.get(0).getName(), "martin");
+        assertEquals(result.get(1).getName(), "sophia");
+    }
+
 
 }

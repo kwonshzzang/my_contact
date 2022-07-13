@@ -1,8 +1,10 @@
 package kr.co.kwonshzzang.mycontact.domain;
 
+import kr.co.kwonshzzang.mycontact.domain.dto.Birthday;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 //@Getter
@@ -16,7 +18,7 @@ import java.time.LocalDate;
 @Entity
 public class Person {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
@@ -27,7 +29,9 @@ public class Person {
     @NonNull
     private String bloodType;
     private String address;
-    private LocalDate birthDay;
+    @Embedded
+    @Valid
+    private Birthday birthDay;
     private String job;
     @ToString.Exclude
     private String phoneNumber;

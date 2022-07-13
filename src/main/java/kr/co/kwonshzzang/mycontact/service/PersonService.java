@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,16 @@ public class PersonService {
 
 
     public List<Person> getPeopleByName(String name) {
-        List<Person> people = personRepository.findByName(name);
-        return people;
+        return personRepository.findByName(name);
     }
+
+    public List<Person> getPeopleByBloodType(String bloodType) {
+        return personRepository.findByBloodType(bloodType);
+    }
+
+    public List<Person> getPeopleByBirthday(int monthOfBirthday) {
+        return personRepository.findByMonthOfBirthday(monthOfBirthday);
+    }
+
+
 }
